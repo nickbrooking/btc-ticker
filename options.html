@@ -1,0 +1,30 @@
+<html>
+<head><title>BTC Ticker Options</title></head>
+
+<body>
+
+Exchange:
+<select id="exchange">
+ <option value="bitstamp">bitstamp</option>
+ <option value="btc-e">btc-e</option>
+ <option value="coinbase">coinbase</option>
+ <option value="coinbase_exchange">coinbase exchange</option>
+ <option value="kraken">kraken</option>
+</select>
+<br>
+Currency:
+<select id="currency">
+  <option value="usd">USD</option>
+  <option value="eur">EUR</option>
+</select>
+
+<br>
+<div id="status"></div>
+<button id="save">Save</button>
+</body>
+
+<script src="options.js"></script>
+<script src="config.js"></script>
+<script src="background.js"></script>
+
+</html>
