@@ -19,7 +19,7 @@
     "https://coinbase.com/api",
     "https://btc-e.com/api",
     "https://www.bitstamp.net/api",
-    "https://api.exchange.coinbase.com/",
+    "https://api.gdax.com/",
     "https://api.kraken.com/"],
-  "version": "1.4.0"
+  "version": "1.4.5"
 }

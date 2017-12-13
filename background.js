@@ -47,10 +47,15 @@ function updatebadge() {
           localStorage['btc_usd'] = data['btc_to_usd'];
         }
       }
+      else if (currency == "cad") {
+        if (data['btc_to_cad']) {
+          localStorage['btc_cad'] = data['btc_to_cad'];
+        }
+      }
     });
   }
-  else if (exchange == "coinbase_exchange") {
-    $.getJSON("https://api.exchange.coinbase.com/products/BTC-USD/ticker",function (data) {
+  else if (exchange == "gdax") {
+    $.getJSON("https://api.gdax.com/products/BTC-USD/ticker",function (data) {
       var badge = "n/a";
 
       if (data['price']) {
@@ -88,6 +93,12 @@ function updatebadge() {
   else if (currency == "usd") {
     if (localStorage['btc_usd']) {
       badge = localStorage['btc_usd'];
+      badge = roundForBadge(badge);
+    }
+  }
+  else if (currency == "cad") {
+    if (localStorage['btc_cad']) {
+      badge = localStorage['btc_cad'];
       badge = roundForBadge(badge);
     }
   }

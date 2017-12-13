@@ -8,17 +8,34 @@ Exchange:
  <option value="bitstamp">bitstamp</option>
  <option value="btc-e">btc-e</option>
  <option value="coinbase">coinbase</option>
- <option value="coinbase_exchange">coinbase exchange</option>
+ <option value="gdax">gdax</option>
  <option value="kraken">kraken</option>
 </select>
-<br>
+<br/>
 Currency:
 <select id="currency">
-  <option value="usd">USD</option>
+  <option value="cad">CAD</option>
   <option value="eur">EUR</option>
+  <option value="usd">USD</option>
+</select>
+<br/>
+Precision: (select lower number if display cuts off)
+<select id="precision">
+  <option value="0">0</option>
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+</select>
+<br/>
+Units:
+<select id="unit">
+  <option value="1">BTC</option>
+  <option value="0.001">mBTC (0.001 BTC)</option>
+  <option value="0.000001">uBTC (0.000001 BTC)</option>
+  <option value="0.00000001">sat (0.00000001 BTC)</option>
 </select>
 
-<br>
+<br/>
 <div id="status"></div>
 <button id="save">Save</button>
 </body>
