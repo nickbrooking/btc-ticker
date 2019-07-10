@@ -19,47 +19,45 @@ function updatebadge() {
       }
     });
   }
-  else if (exchange == "btc-e") {
-    $.getJSON("https://btc-e.com/api/2/btc_usd/ticker",function (data) {
-      var badge = "n/a";
-
-      if (data['ticker']['last']) {
-        if (currency == "eur") {
-          localStorage['btc_eur'] = data['ticker']['last'];
-        }
-        else if (currency == "usd") {
-          localStorage['btc_usd'] = data['ticker']['last']; 
-        }
-      }
-    });
-  }
   else if (exchange == "coinbase") {
-    $.getJSON("https://coinbase.com/api/v1/currencies/exchange_rates",function (data) {
+    $.getJSON("https://api.coinbase.com/v2/prices/spot?currency=" + currency,function (data) {
       var badge = "n/a";
 
-      if (currency == "eur") {
-        if (data['btc_to_eur']) {
-          localStorage['btc_eur'] = data['btc_to_eur'];
-        }
-      }
-      else if (currency == "usd") {
-        if (data['btc_to_usd']) {
-          localStorage['btc_usd'] = data['btc_to_usd'];
-        }
-      }
-      else if (currency == "cad") {
-        if (data['btc_to_cad']) {
-          localStorage['btc_cad'] = data['btc_to_cad'];
+      if (data['data']) {
+        data = data['data'];
+
+        if (data['amount']) {
+          if (currency == "eur") {
+              localStorage['btc_eur'] = data['btc_to_eur'];
+          }
+          else if (currency == "usd") {
+              localStorage['btc_usd'] = data['amount'];
+          }
+          else if (currency == "cad") {
+              localStorage['btc_cad'] = data['btc_to_cad'];
+          }
         }
       }
     });
   }
-  else if (exchange == "gdax") {
-    $.getJSON("https://api.gdax.com/products/BTC-USD/ticker",function (data) {
+  else if (exchange == "coinbasePro") {
+    var product = "";
+    if (currency == "eur") {
+      product = "BTC-EUR";
+    }
+    else if (currency == "usd") {
+      product = "BTC-USD";
+    }
+    $.getJSON("https://api.pro.coinbase.com/products/" + product + "/ticker",function (data) {
       var badge = "n/a";
 
       if (data['price']) {
-        localStorage['btc_usd'] = data['price'];
+        if (currency == "eur") {
+          localStorage['btc_eur'] = data['price'];
+        }
+        else if (currency == "usd") {
+          localStorage['btc_usd'] = data['price'];
+        }
       }
     });
   }

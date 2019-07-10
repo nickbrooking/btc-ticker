@@ -11,10 +11,10 @@ function save_options() {
 
   var optionsOK = true;
 
-  if ((exchange == "bitstamp" || exchange == "coinbase_exchange") && currency == "eur") {
+  if (exchange == "coinbase" && currency == "eur") {
     optionsOK = false;
   }
-  
+
   if (exchange != "coinbase" && currency == "cad") {
     optionsOK = false;
   }
