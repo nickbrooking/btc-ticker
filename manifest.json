@@ -1,24 +1,25 @@
 {
-  "background": {
-    "page": "background.html"
-  },
-  "browser_action": {
-    "default_icon": "btc_icon_48.png"
-  },
+  "manifest_version": 3,
+  "name": "BTC Ticker",
   "description": "This extension displays the current btc price on the badge icon.",
+  "version": "1.5.0",
+  "background": {
+    "service_worker": "service_worker.js"
+  },
+  "permissions" : [
+    "storage"
+  ],
+  "host_permissions": [
+    "https://api.coinbase.com/",
+    "https://api.pro.coinbase.com/",
+    "https://www.bitstamp.net/api",
+    "https://api.kraken.com/"],
+  "action" : {
+  },
   "icons": { 
     "16": "btc_icon_16.png",
     "48": "btc_icon_48.png",
     "128": "btc_icon_128.png" 
   },
-  "manifest_version": 2,
-  "name": "BTC Ticker",
-  "options_page": "options.html",
-  "permissions": [
-    "storage",
-    "https://api.coinbase.com/",
-    "https://api.pro.coinbase.com/",
-    "https://www.bitstamp.net/api",
-    "https://api.kraken.com/"],
-  "version": "1.4.7"
+  "options_page": "options.html"
 }

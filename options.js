@@ -1,5 +1,5 @@
 // Saves options to localStorage.
-function save_options() {
+async function save_options() {
   var selectedExchange = document.getElementById("exchange");
   var selectedCurrency = document.getElementById("currency");
   var selectedPrecision= document.getElementById("precision");
@@ -20,10 +20,15 @@ function save_options() {
   }
 
   if (optionsOK) {
-    localStorage["exchange"] = exchange;
-    localStorage["currency"] = currency;
-    localStorage["precision"] = precision;
-    localStorage["unit"] = unit;
+    try {
+      await chrome.storage.local.set({exchange});
+      await chrome.storage.local.set({currency});
+      await chrome.storage.local.set({precision});
+      await chrome.storage.local.set({unit});
+    }
+    catch (error) {
+      console.log(error);
+    }
   }
 
   // Update status to let user know options were saved.
@@ -42,11 +47,13 @@ function save_options() {
 }
 
 // Restores select box state to saved value from localStorage.
-function restore_options() {
-  var exchange = localStorage["exchange"];
-  var currency = localStorage["currency"];
-  var precision= localStorage["precision"];
-  var unit     = localStorage["unit"];
+async function restore_options() {
+  var storage = await chrome.storage.local.get();
+
+  var exchange = storage['exchange'];
+  var currency = storage['currency'];
+  var precision= storage['precision'];
+  var unit     = storage['unit'];
   if (!exchange) {
     // default to coinbase
     exchange = "coinbase";
