@@ -127,14 +127,32 @@ async function updatebadge() {
     }
   }
 
+  chrome.action.setBadgeTextColor({color:'white'});
   chrome.action.setBadgeText({text:''+badge});
 }
 
-//setInterval(updatebadge,5*60*1000);
-setInterval(updatebadge,29000);
-updatebadge();
+async function update() {
+  chrome.action.setBadgeTextColor({color:'white'});
+  chrome.action.setBadgeText({text:'...'});
+  //setInterval(updatebadge,5*60*1000);
+  setInterval(updatebadge,29000);
+  updatebadge();
+}
+
+chrome.runtime.onInstalled.addListener(function() {
+  update();
+});
+
+chrome.runtime.onStartup.addListener(function() {
+  update();
+});
 
 chrome.action.onClicked.addListener(function(tab) {
-  chrome.action.setBadgeText({text:'...'});
-  updatebadge();
+  update();
+});
+
+chrome.idle.onStateChanged.addListener(function(state) {
+  if (state == 'active') {
+    update();
+  }
 });
