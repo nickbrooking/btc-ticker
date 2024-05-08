@@ -127,12 +127,12 @@ async function updatebadge() {
     }
   }
 
-  chrome.action.setBadgeTextColor({color:'white'});
+  //chrome.action.setBadgeTextColor({color:'white'});
   chrome.action.setBadgeText({text:''+badge});
 }
 
 async function update() {
-  chrome.action.setBadgeTextColor({color:'white'});
+  //chrome.action.setBadgeTextColor({color:'white'});
   chrome.action.setBadgeText({text:'...'});
   //setInterval(updatebadge,5*60*1000);
   setInterval(updatebadge,29000);
