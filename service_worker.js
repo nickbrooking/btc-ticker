@@ -7,12 +7,12 @@ async function roundForBadge(num) {
 
   var precision = storage['precision'];
   if (!precision) {
-    precision = 1;
+    precision = 0;
   }
 
   num *= unit;
 
-  if (num>9999 && num<100000) {
+  if (num>9999) {
     return (num/1000).toFixed(precision) + 'k';
   } else {
     return (num).toFixed(precision);

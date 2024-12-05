@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "BTC Ticker",
   "description": "This extension displays the current btc price on the badge icon.",
-  "version": "1.5.3",
+  "version": "1.5.4",
   "background": {
     "service_worker": "service_worker.js"
   },
