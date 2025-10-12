@@ -129,6 +129,19 @@ async function updatebadge() {
 
   //chrome.action.setBadgeTextColor({color:'white'});
   chrome.action.setBadgeText({text:''+badge});
+
+  // Set tooltip if enabled
+  var showTooltip = storage['showTooltip'];
+  if (showTooltip) {
+    var price = storage[`btc_${currency}`];
+    if (price) {
+      var locales = { usd: 'en-US', eur: 'en-EU', cad: 'en-CA' };
+      var formattedPrice = parseFloat(price).toLocaleString(locales[currency], { maximumFractionDigits: 0 }) + " " + currency.toUpperCase();
+      chrome.action.setTitle({ title: formattedPrice });
+    }
+  } else {
+    chrome.action.setTitle({ title: "BTC Ticker" });
+  }
 }
 
 async function update() {
