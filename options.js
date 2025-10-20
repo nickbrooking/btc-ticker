@@ -4,10 +4,12 @@ async function save_options() {
   var selectedCurrency = document.getElementById("currency");
   var selectedPrecision= document.getElementById("precision");
   var selectedUnit     = document.getElementById("unit");
+  var showTooltip      = document.getElementById("showTooltip");
   var exchange = selectedExchange.children[selectedExchange.selectedIndex].value;
   var currency = selectedCurrency.children[selectedCurrency.selectedIndex].value;
   var precision= selectedPrecision.children[selectedPrecision.selectedIndex].value;
   var unit     = selectedUnit.children[selectedUnit.selectedIndex].value;
+  var tooltip  = showTooltip.checked;
 
   var optionsOK = true;
 
@@ -25,6 +27,7 @@ async function save_options() {
       await chrome.storage.local.set({currency});
       await chrome.storage.local.set({precision});
       await chrome.storage.local.set({unit});
+      await chrome.storage.local.set({showTooltip: tooltip});
     }
     catch (error) {
       console.log(error);
@@ -50,10 +53,11 @@ async function save_options() {
 async function restore_options() {
   var storage = await chrome.storage.local.get();
 
-  var exchange = storage['exchange'];
-  var currency = storage['currency'];
-  var precision= storage['precision'];
-  var unit     = storage['unit'];
+  var exchange    = storage['exchange'];
+  var currency    = storage['currency'];
+  var precision   = storage['precision'];
+  var unit        = storage['unit'];
+  var showTooltip = storage['showTooltip'];
   if (!exchange) {
     // default to coinbase
     exchange = "coinbase";
@@ -65,6 +69,10 @@ async function restore_options() {
   if (!precision) {
     // default to 2
     precision = 2;
+  }
+  if (showTooltip === undefined) {
+    // default to false
+    showTooltip = false;
   }
 
   var selectedExchange = document.getElementById("exchange");
@@ -99,6 +107,8 @@ async function restore_options() {
       break;
     }
   }
+  var showTooltipCheckbox = document.getElementById("showTooltip");
+  showTooltipCheckbox.checked = showTooltip;
 }
 
 document.addEventListener('DOMContentLoaded', restore_options);
