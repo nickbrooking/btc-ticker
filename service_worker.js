@@ -44,27 +44,6 @@ async function updatebadge() {
     }
   }
   else if (exchange == "coinbase") {
-    data = await fetch("https://api.coinbase.com/v2/prices/spot?currency=");
-    data = await data.json();
-    badge = "n/a";
-
-    if (data['data']) {
-      data = data['data'];
-
-      if (data['amount']) {
-        if (currency == "eur") {
-            await chrome.storage.local.set({btc_eur:data['btc_to_eur']});
-        }
-        else if (currency == "usd") {
-            await chrome.storage.local.set({btc_usd:data['amount']});
-        }
-        else if (currency == "cad") {
-            await chrome.storage.local.set({btc_cad:data['btc_to_cad']});
-        }
-      }
-    }
-  }
-  else if (exchange == "coinbasePro") {
     var product = "";
     if (currency == "eur") {
       product = "BTC-EUR";
