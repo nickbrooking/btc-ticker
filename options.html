@@ -1,46 +1,334 @@
-<html>
-<head><title>BTC Ticker Options</title></head>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>BTC Ticker Options</title>
+  <style>
+    :root {
+      --bg: #f4f5f7;
+      --card: #ffffff;
+      --text: #1a1d21;
+      --muted: #6b7280;
+      --border: #e2e5ea;
+      --field: #ffffff;
+      --accent: #f7931a;
+      --accent-dark: #e07d05;
+      --shadow: 0 6px 24px rgba(20, 23, 28, 0.08);
+    }
+
+    /* Auto theme: follow the OS unless the user forced light. */
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #14171c;
+        --card: #1d2127;
+        --text: #f2f4f7;
+        --muted: #9aa3af;
+        --border: #2c313a;
+        --field: #262b33;
+        --shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    /* Forced dark, regardless of OS. */
+    :root[data-theme="dark"] {
+      --bg: #14171c;
+      --card: #1d2127;
+      --text: #f2f4f7;
+      --muted: #9aa3af;
+      --border: #2c313a;
+      --field: #262b33;
+      --shadow: 0 6px 24px rgba(0, 0, 0, 0.4);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 32px 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+    }
+
+    .card {
+      width: 100%;
+      max-width: 420px;
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 4px;
+    }
+
+    .logo {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 22px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    h1 {
+      font-size: 18px;
+      margin: 0;
+      line-height: 1.2;
+    }
+
+    .subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin: 2px 0 24px;
+    }
+
+    .field {
+      margin-bottom: 18px;
+    }
+
+    label.field-label {
+      display: block;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .hint {
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    select {
+      width: 100%;
+      padding: 10px 12px;
+      font-size: 14px;
+      color: var(--text);
+      background-color: var(--field);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%236b7280' d='M6 8L0 0h12z'/%3E%3C/svg%3E");
+      background-repeat: no-repeat;
+      background-position: right 12px center;
+      cursor: pointer;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+
+    select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(247, 147, 26, 0.25);
+    }
+
+    option:disabled { color: var(--muted); }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
+
+    .toggle-row .field-label { margin-bottom: 0; }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 44px;
+      height: 24px;
+      flex: 0 0 auto;
+    }
+
+    .switch input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .slider {
+      position: absolute;
+      inset: 0;
+      background: var(--border);
+      border-radius: 24px;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .slider::before {
+      content: "";
+      position: absolute;
+      height: 18px;
+      width: 18px;
+      left: 3px;
+      top: 3px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+    }
+
+    .switch input:checked + .slider { background: var(--accent); }
+    .switch input:checked + .slider::before { transform: translateX(20px); }
+    .switch input:focus-visible + .slider { box-shadow: 0 0 0 3px rgba(247, 147, 26, 0.25); }
+
+    .color-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .color-row.hidden { display: none; }
+
+    .color-row span { font-size: 13px; color: var(--muted); }
+
+    input[type="color"] {
+      width: 44px;
+      height: 32px;
+      padding: 0;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--field);
+      cursor: pointer;
+    }
+
+    button#save {
+      width: 100%;
+      margin-top: 8px;
+      padding: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.15s, transform 0.05s;
+    }
+
+    button#save:hover { background: var(--accent-dark); }
+    button#save:active { transform: translateY(1px); }
+
+    #status {
+      min-height: 20px;
+      margin-top: 14px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    hr.divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 22px 0;
+    }
+  </style>
+</head>
 
 <body>
+  <div class="card">
+    <div class="header">
+      <div class="logo">₿</div>
+      <h1>BTC Ticker</h1>
+    </div>
+    <p class="subtitle">Choose where and how the price is displayed.</p>
 
-Exchange:
-<select id="exchange">
- <option value="bitstamp">bitstamp</option>
- <option value="coinbase">coinbase</option>
- <option value="kraken">kraken</option>
-</select>
-<br/>
-Currency:
-<select id="currency">
-  <option value="cad">CAD</option>
-  <option value="eur">EUR</option>
-  <option value="usd">USD</option>
-</select>
-<br/>
-Precision: (select lower number if display cuts off)
-<select id="precision">
-  <option value="0">0</option>
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
-</select>
-<br/>
-Units:
-<select id="unit">
-  <option value="1">BTC</option>
-  <option value="0.001">mBTC (0.001 BTC)</option>
-  <option value="0.000001">uBTC (0.000001 BTC)</option>
-  <option value="0.00000001">sat (0.00000001 BTC)</option>
-</select>
-<br/>
-Show full price in icon tooltip:
-<input type="checkbox" id="showTooltip">
-<br/>
-<div id="status"></div>
-<button id="save">Save</button>
+    <div class="field">
+      <label class="field-label" for="exchange">Price source</label>
+      <select id="exchange">
+        <option value="coingecko">CoinGecko (all currencies)</option>
+        <option value="bitstamp">Bitstamp</option>
+        <option value="coinbase">Coinbase</option>
+        <option value="kraken">Kraken</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="currency">Currency</label>
+      <select id="currency">
+        <option value="usd">USD</option>
+        <option value="eur">EUR</option>
+        <option value="cad">CAD</option>
+        <option value="gbp">GBP</option>
+        <option value="jpy">JPY</option>
+        <option value="aud">AUD</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="precision">Precision
+        <span class="hint">— lower this if the badge text is cut off</span>
+      </label>
+      <select id="precision">
+        <option value="0">0</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+      </select>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="unit">Units</label>
+      <select id="unit">
+        <option value="1">BTC</option>
+        <option value="0.001">mBTC (0.001 BTC)</option>
+        <option value="0.000001">uBTC (0.000001 BTC)</option>
+        <option value="0.00000001">sat (0.00000001 BTC)</option>
+      </select>
+    </div>
+
+    <div class="field toggle-row">
+      <label class="field-label" for="showTooltip">Show full price in icon tooltip</label>
+      <span class="switch-wrap">
+        <label class="switch">
+          <input type="checkbox" id="showTooltip">
+          <span class="slider"></span>
+        </label>
+      </span>
+    </div>
+
+    <hr class="divider">
+
+    <div class="field">
+      <label class="field-label" for="badgeColorMode">Badge color</label>
+      <select id="badgeColorMode">
+        <option value="direction">24h change (green / red)</option>
+        <option value="custom">Custom color</option>
+        <option value="none">Neutral</option>
+      </select>
+      <div class="color-row hidden" id="badgeColorRow">
+        <input type="color" id="badgeColor" value="#f7931a">
+        <span>Badge background color</span>
+      </div>
+    </div>
+
+    <div class="field">
+      <label class="field-label" for="theme">Theme</label>
+      <select id="theme">
+        <option value="auto">Auto (match system)</option>
+        <option value="light">Light</option>
+        <option value="dark">Dark</option>
+      </select>
+    </div>
+
+    <button id="save">Save</button>
+    <div id="status"></div>
+  </div>
+
+  <script src="options.js"></script>
 </body>
-
-<script src="options.js"></script>
-<script src="service_worker.js"></script>
-
 </html>

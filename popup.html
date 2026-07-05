@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>BTC Ticker</title>
+  <style>
+    :root {
+      --bg: #ffffff;
+      --text: #1a1d21;
+      --muted: #6b7280;
+      --border: #e2e5ea;
+      --accent: #f7931a;
+      --up: #16a34a;
+      --down: #dc2626;
+      --chip-up-bg: rgba(22, 163, 74, 0.12);
+      --chip-down-bg: rgba(220, 38, 38, 0.12);
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #1d2127;
+        --text: #f2f4f7;
+        --muted: #9aa3af;
+        --border: #2c313a;
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #1d2127;
+      --text: #f2f4f7;
+      --muted: #9aa3af;
+      --border: #2c313a;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      width: 300px;
+      margin: 0;
+      padding: 16px;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+    }
+
+    .top {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .logo {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: var(--accent);
+      color: #fff;
+      font-weight: 700;
+      font-size: 17px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex: 0 0 auto;
+    }
+
+    .title { font-size: 15px; font-weight: 600; }
+    .source { margin-left: auto; font-size: 11px; color: var(--muted); text-transform: capitalize; }
+
+    .price-row {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    #price { font-size: 26px; font-weight: 700; letter-spacing: -0.5px; }
+
+    .chip {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 3px 8px;
+      border-radius: 999px;
+    }
+    .chip.up   { color: var(--up);   background: var(--chip-up-bg); }
+    .chip.down { color: var(--down); background: var(--chip-down-bg); }
+    .chip.flat { color: var(--muted); background: var(--border); }
+
+    #spark {
+      width: 100%;
+      height: 56px;
+      display: block;
+      margin-bottom: 12px;
+    }
+
+    .stats {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 14px;
+    }
+    .stat {
+      flex: 1;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 8px 10px;
+    }
+    .stat .k { font-size: 11px; color: var(--muted); }
+    .stat .v { font-size: 14px; font-weight: 600; margin-top: 2px; }
+
+    .footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: var(--muted);
+    }
+    .footer a, .footer button {
+      color: var(--accent);
+      background: none;
+      border: none;
+      padding: 0;
+      font: inherit;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .footer a:hover, .footer button:hover { text-decoration: underline; }
+    .links { display: flex; gap: 14px; }
+  </style>
+</head>
+
+<body>
+  <div class="top">
+    <div class="logo">₿</div>
+    <div class="title">Bitcoin</div>
+    <div class="source" id="source"></div>
+  </div>
+
+  <div class="price-row">
+    <div id="price">—</div>
+    <div class="chip flat" id="change">—</div>
+  </div>
+
+  <canvas id="spark"></canvas>
+
+  <div class="stats">
+    <div class="stat">
+      <div class="k">24h High</div>
+      <div class="v" id="high">—</div>
+    </div>
+    <div class="stat">
+      <div class="k">24h Low</div>
+      <div class="v" id="low">—</div>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span id="updated">—</span>
+    <span class="links">
+      <a id="chartLink" href="https://www.coingecko.com/en/coins/bitcoin" target="_blank" rel="noopener">Chart</a>
+      <button id="settingsBtn">Settings</button>
+    </span>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
